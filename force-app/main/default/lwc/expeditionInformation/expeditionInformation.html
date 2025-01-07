@@ -1,0 +1,70 @@
+<template>
+    <template lwc:if={expedition}>
+        <lightning-card class="slds-p-horizontal_medium">
+            <div class="slds-grid slds-grid_align-spread">
+                <div class="slds-col slds-align_absolute-center slds-box slds-m-around_small">
+                    {expedition.expeditionName}
+                </div>
+                <div class="slds-col slds-align_absolute-center slds-box slds-m-around_small">
+                    13/12/2024 - 03/02/2025
+                </div>
+            </div>
+            <template for:each={expedition.expeditionActions} for:item="action">
+                <div key={action.Id} class="slds-border_top slds-border_right slds-border_bottom slds-border_left slds-m-horizontal_medium">
+                   <div class="slds-grid slds-gutters slds-grid_vertical-align-center slds-align_absolute-center">
+                        <div class="slds-col">
+                            <lightning-input type="checkbox"></lightning-input>
+                        </div>
+                        <!-- <div class="slds-col">
+                            <lightning-input type="checkbox"></lightning-input>
+                        </div> -->
+                        <div class="slds-col">
+                            <lightning-formatted-text type="text" value={action.Title__c}></lightning-formatted-text>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-formatted-text type="text" value={action.Description__c}></lightning-formatted-text>
+                        </div>
+                        <div class="slds-col slds-p-bottom_medium">
+                            <lightning-input placeholder="Findings Input" type="text" value={action.Findings_Input__c}></lightning-input>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-button variant="neutral" label="Update"></lightning-button>
+                        </div>
+                   </div>
+                <!-- <lightning-datatable
+                    class="slds-table slds-table_cell-buffer slds-table_header-hidden"
+                    key-field="id"
+                    data={expedition.expeditionActions}
+                    columns={columns}
+                    hide-table-header
+                    suppress-bottom-bar
+                    style="border: none;"
+                    >
+                </lightning-datatable> -->
+                </div>
+            </template>
+            <div class="slds-grid slds-grid_align-spread">
+                <div class="slds-col slds-align_absolute-center  slds-m-around_small">
+                    <div class="slds-form-element slds-align_absolute-center">
+                        <div class="slds-form-element__control">
+                          <div class="slds-file-selector slds-file-selector_files">
+                            <input type="file" class="slds-file-selector__input slds-assistive-text" accept="image/png, .jpg, image/jpeg" 
+                            id="file-upload-input-115" aria-labelledby="file-selector-primary-label-113 file-selector-secondary-label114" onchange={handleFileUpload} />
+                            <label class="slds-file-selector__body" for="file-upload-input-115" id="file-selector-secondary-label114">
+                            <span class="slds-file-selector__button slds-button slds-button_neutral" >
+                                Import Images</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+                <div class="slds-col slds-align_absolute-center  slds-m-around_small">
+                    <lightning-button variant="neutral" label="Add Note" onclick={uploadNote}></lightning-button>
+                </div>
+                <div class="slds-col slds-align_absolute-center  slds-m-around_small">
+                    <lightning-button variant="neutral" label="Expedition Complete" onclick={completeExpedition}></lightning-button>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+</template>
