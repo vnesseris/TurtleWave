@@ -56,8 +56,7 @@ public with sharing class ExpeditionInformationController {
         insert cv;
         return cv;
       } catch(Exception e) {
-        System.debug(e);
-        return null;
+        throw new AuraHandledException(e.getMessage());
       }
     }
 
