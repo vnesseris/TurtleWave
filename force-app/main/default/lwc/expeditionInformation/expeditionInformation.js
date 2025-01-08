@@ -7,9 +7,8 @@ import { NavigationMixin } from 'lightning/navigation';
 import updateStatus from '@salesforce/apex/expeditionInformationController.updateStatusCompleted';
 import updateActionFindings from '@salesforce/apex/expeditionInformationController.updateActionFindings';
 import validateCompletion from '@salesforce/apex/expeditionInformationController.validateCompletion';
-
-
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
 const columns = [
     {label: 'Title', fieldName: 'Title__c', editable: false},
     {label: 'Description', fieldName: 'Description__c', editable: false},
@@ -32,23 +31,6 @@ export default class ExpeditionInformation extends LightningElement {
     apiName;
     @track expeditionCompleted = false;
     
-    get pagereference() {
-        return {
-            "type": "standard__quickAction",
-            "attributes": {
-                "apiName": 'Global.NewNote'
-            },
-            "state": {
-                "objectApiName": 'Expedition__c',
-                "context": "RECORD_DETAIL",
-                "recordId": this.recordId,
-                "actionName":'Global.NewNote',
-                "backgroundContext": "/lightning/r/Expedition__c/" + this.recordId + "/view"
-            }
-        }
-    }
-
-
     @wire(getUserExpedition, {uId: '$uId'})
     getUserExpedition({data, error}){
         if(data){
@@ -105,8 +87,40 @@ export default class ExpeditionInformation extends LightningElement {
     }
 
     uploadNote() {
-        this.apiName = 'Global.NewNote';
-        this[NavigationMixin.Navigate](this.pagereference, true);
+        // Navigate to the New Note page
+        // this[NavigationMixin.Navigate]({
+        //     type: 'standard__objectPage',
+        //     attributes: {
+        //         objectApiName: 'ContentNote',
+        //         actionName: 'new'
+        //     }
+        // });
+
+        // this[NavigationMixin.Navigate]({
+        //     type: 'standard__quickAction',
+        //     attributes: {
+        //         apiName: 'Global.NewNote'
+        //     },
+        //     state: {
+        //         objectApiName: 'Expedition__c',
+        //         context: 'RECORD_DETAIL',
+        //         recordId: this.recordId,
+        //         backgroundContext: '/lightning/r/Expedition__c/' + this.recordId + '/view'
+        //     }
+        // })
+
+        // this[NavigationMixin.Navigate]({
+            
+        //         type: "standard__quickAction",
+        //         attributes: {
+        //             apiName: 'Global.NewNote'
+        //         },
+        //         state: {
+        //             objectApiName: 'Expedition__c',
+        //             recordId: this.recordId
+        //         }
+            
+        // })
     }
 
     completeExpedition(){
