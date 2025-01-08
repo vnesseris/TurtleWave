@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Expedition Member Assignment</name>
+    <style>none</style>
+    <subject>Expedition Assignment</subject>
+    <textOnly>Dear {!Expedition_Member__c.Expedition_Member_Name__c} ,
+
+Please be informed that you have been assigned to expedition {!Expedition_Member__c.Expedition_Name__c}
+which is planned to leave {!Expedition_Member__c.Expedition_Port_Name__c} {!Expedition_Member__c.Expedition_Country__c} on {!Expedition_Member__c.Expedition_Start_Date__c}.
+The mission is expected to last until {!Expedition_Member__c.Expedition_End_Date__c}. Your role on the
+expedition will be {!Expedition_Member__c.Expedition_Role__c}.
+
+Further information and objectives for the mission will be provided to you
+in the coming days.
+
+Thanks,
+TurtleWave Management</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
