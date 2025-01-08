@@ -22,7 +22,8 @@ public with sharing class ExpeditionInformationController {
             
             List<Expedition_Action__c> actions = [SELECT Id, Title__c, Action_Completed__c, Description__c, Findings_Input__c 
                 FROM Expedition_Action__c 
-                WHERE Expedition__c = :activeExpedition.Expedition__c];
+                WHERE Expedition__c = :activeExpedition.Expedition__c
+                AND Action_Completed__c != TRUE];
 
             ExpeditionWrapper expeditionWrapper = new ExpeditionWrapper();
             expeditionWrapper.expeditionName = activeExpedition.Expedition__r.Name;
