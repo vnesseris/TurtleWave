@@ -30,13 +30,15 @@ export default class ExpeditionInformation extends LightningElement {
     fileData;
     apiName;
     @track expeditionCompleted = false;
-    
+    @track expeditionActions;
+
     @wire(getUserExpedition, {uId: '$uId'})
     getUserExpedition({data, error}){
         if(data){
             this.expedition = data;
             this.recordId = data.expeditionId;
             this.expeditionCompleted = data.expeditionStatus === 'Completed';
+            this.expeditionActions = data.expeditionActions;
         } else if(error){
             console.log(JSON.stringify(error));
         }
@@ -152,14 +154,17 @@ export default class ExpeditionInformation extends LightningElement {
 
     updateTaskStatus(event){
         const actionId = event.target.dataset.id;
+        const btn = this.template.querySelector(`[data-id="${actionId}"]`);
 
         if(event.target.checked){
-            const btnList = this.template.querySelectorAll(`[data-id="${actionId}"]`);
             updateStatus({'actionId': actionId, 'obj': 'Expedition_Action__c', 'fieldToUpdate': 'Action_Completed__c', 'value':true})
             .then((result) =>{
-                btnList.forEach((elm) => {elm.disabled = true});
+                this.toast('Expedition task completed', 'success');
+                this.expeditionActions = [...this.expeditionActions].filter((elm) => {elm.Id !== actionId});
+                btn.checked = false;
             })
             .catch((error) => {
+                btn.checked = false;
                 this.toast(error, 'error');
             });
         }

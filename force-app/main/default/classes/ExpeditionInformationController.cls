@@ -1,6 +1,6 @@
 public with sharing class ExpeditionInformationController {
 
-    class ExpeditionWrapper{
+    public class ExpeditionWrapper{
       @AuraEnabled public String expeditionName;
       @AuraEnabled public String expeditionId;
       @AuraEnabled public String expeditionStatus;
