@@ -6,29 +6,26 @@
                     {expedition.expeditionName}
                 </div>
                 <div class="slds-col slds-align_absolute-center slds-box slds-m-around_small">
-                    13/12/2024 - 03/02/2025
+                    {expedition.expeditionDuration}
                 </div>
             </div>
             <template for:each={expedition.expeditionActions} for:item="action">
-                <div key={action.Id} class="slds-border_top slds-border_right slds-border_bottom slds-border_left slds-m-horizontal_medium">
+                <div key={action.Id} class="slds-box slds-m-horizontal_medium">
                    <div class="slds-grid slds-gutters slds-grid_vertical-align-center slds-align_absolute-center">
                         <div class="slds-col">
-                            <lightning-input type="checkbox"></lightning-input>
-                        </div>
-                        <!-- <div class="slds-col">
-                            <lightning-input type="checkbox"></lightning-input>
-                        </div> -->
-                        <div class="slds-col">
-                            <lightning-formatted-text type="text" value={action.Title__c}></lightning-formatted-text>
+                            <lightning-input type="checkbox" checked={action.Action_Completed__c} disabled={action.Action_Completed__c} onchange={updateTaskStatus} data-id={action.Id}></lightning-input>
                         </div>
                         <div class="slds-col">
-                            <lightning-formatted-text type="text" value={action.Description__c}></lightning-formatted-text>
+                            <lightning-formatted-text type="text" value={action.Title__c} data-id={action.Id}></lightning-formatted-text>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-formatted-text type="text" value={action.Description__c} data-id={action.Id}></lightning-formatted-text>
                         </div>
                         <div class="slds-col slds-p-bottom_medium">
-                            <lightning-input placeholder="Findings Input" type="text" value={action.Findings_Input__c}></lightning-input>
+                            <lightning-input title="InputFindings" placeholder="Findings Input" type="text" disabled={action.Action_Completed__c} data-id={action.Id}></lightning-input>
                         </div>
                         <div class="slds-col">
-                            <lightning-button variant="neutral" label="Update"></lightning-button>
+                            <lightning-button variant="neutral" label="Update" disabled={action.Action_Completed__c} data-id={action.Id} onclick={updateActionFindings}></lightning-button>
                         </div>
                    </div>
                 <!-- <lightning-datatable
@@ -49,7 +46,7 @@
                         <div class="slds-form-element__control">
                           <div class="slds-file-selector slds-file-selector_files">
                             <input type="file" class="slds-file-selector__input slds-assistive-text" accept="image/png, .jpg, image/jpeg" 
-                            id="file-upload-input-115" aria-labelledby="file-selector-primary-label-113 file-selector-secondary-label114" onchange={handleFileUpload} />
+                            id="file-upload-input-115" aria-labelledby="file-selector-primary-label-113 file-selector-secondary-label114" onchange={handleFileUpload} disabled={expeditionCompleted}/>
                             <label class="slds-file-selector__body" for="file-upload-input-115" id="file-selector-secondary-label114">
                             <span class="slds-file-selector__button slds-button slds-button_neutral" >
                                 Import Images</span>
@@ -59,10 +56,10 @@
                       </div>
                 </div>
                 <div class="slds-col slds-align_absolute-center  slds-m-around_small">
-                    <lightning-button variant="neutral" label="Add Note" onclick={uploadNote}></lightning-button>
+                    <lightning-button variant="neutral" label="Add Note" onclick={uploadNote} disabled={expeditionCompleted}></lightning-button>
                 </div>
                 <div class="slds-col slds-align_absolute-center  slds-m-around_small">
-                    <lightning-button variant="neutral" label="Expedition Complete" onclick={completeExpedition}></lightning-button>
+                    <lightning-button variant="neutral" label="Expedition Complete" onclick={markExpeditionCompleted} disabled={expeditionCompleted}></lightning-button>
                 </div>
             </div>
         </lightning-card>

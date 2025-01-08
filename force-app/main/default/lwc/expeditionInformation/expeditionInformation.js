@@ -4,6 +4,9 @@ import getUserExpedition from '@salesforce/apex/ExpeditionInformationController.
 import uploadFile from '@salesforce/apex/ExpeditionInformationController.uploadFile';
 import completeExpedition from '@salesforce/apex/ExpeditionInformationController.completeExpedition';
 import { NavigationMixin } from 'lightning/navigation';
+import updateStatus from '@salesforce/apex/expeditionInformationController.updateStatusCompleted';
+import updateActionFindings from '@salesforce/apex/expeditionInformationController.updateActionFindings';
+import validateCompletion from '@salesforce/apex/expeditionInformationController.validateCompletion';
 
 
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -27,6 +30,7 @@ export default class ExpeditionInformation extends LightningElement {
     recordId;
     fileData;
     apiName;
+    @track expeditionCompleted = false;
     
     get pagereference() {
         return {
@@ -50,7 +54,7 @@ export default class ExpeditionInformation extends LightningElement {
         if(data){
             this.expedition = data;
             this.recordId = data.expeditionId;
-            this.expeditionStatus = data.expeditionStatus;
+            this.expeditionCompleted = data.expeditionStatus === 'Completed';
         } else if(error){
             console.log(JSON.stringify(error));
         }
@@ -68,9 +72,9 @@ export default class ExpeditionInformation extends LightningElement {
 
         const {base64, filename, recordId} = this.fileData;
         uploadFile({ base64, filename, recordId }).then(result=>{
-            this.fileData = null
-            let title = `${filename} uploaded successfully!!`
-            this.toast(title)
+            this.fileData = null;
+            let title = `${filename} uploaded successfully!!`;
+            this.toast(title, 'success');
         })
     }
 
@@ -92,33 +96,70 @@ export default class ExpeditionInformation extends LightningElement {
     );
     }
 
-    toast(title){
+    toast(title, variant){
         const toastEvent = new ShowToastEvent({
             title, 
-            variant:"success"
+            variant
         })
         this.dispatchEvent(toastEvent)
     }
 
     uploadNote() {
-        console.log('vas should be at least here');
         this.apiName = 'Global.NewNote';
-        console.log('vas in here ' + JSON.stringify(this.pagereference));
         this[NavigationMixin.Navigate](this.pagereference, true);
     }
 
     completeExpedition(){
-        if(this.expeditionStatus === 'Completed'){
-            this.toast('Expedition already completed');
-            return;
-        }
+        this.markExpeditionCompleted();        
+    }
 
-        completeExpedition({'recordId': this.recordId})
-        .then((result) => {
-            this.toast('Expedition completed successfully')
-        })
-        .catch((error) => {
-            this.toast(error);
-        });
+    async markExpeditionCompleted(){
+        try{
+            let completionValidity = await validateCompletion({
+                expeditionId: this.recordId
+            });
+
+            if(!completionValidity){
+                this.toast('Expedition cannot be completed. There are actions pending', 'info');
+            } else{
+                completeExpedition({'recordId': this.recordId})
+                .then((result) => {
+                    this.toast('Expedition completed successfully', 'success');
+                    this.expeditionCompleted = true;
+                })
+                .catch((error) => {
+                    this.toast(error, 'error');
+                });
+            }
+        } catch(error){
+
+        }
+    }
+
+    updateTaskStatus(event){
+        const actionId = event.target.dataset.id;
+
+        if(event.target.checked){
+            const btnList = this.template.querySelectorAll(`[data-id="${actionId}"]`);
+            updateStatus({'actionId': actionId, 'obj': 'Expedition_Action__c', 'fieldToUpdate': 'Action_Completed__c', 'value':true})
+            .then((result) =>{
+                btnList.forEach((elm) => {elm.disabled = true});
+            })
+            .catch((error) => {
+                this.toast(error, 'error');
+            });
+        }
+    }
+
+    updateActionFindings(event){
+        const actionId = event.target.dataset.id;
+        const findingsInput = this.template.querySelector(`[data-id="${actionId}"][title="InputFindings"]`);
+
+        if(findingsInput.value){
+            updateActionFindings({'actionId': actionId, 'value': findingsInput.value})
+            .then((result) => {
+                findingsInput.value = '';
+            })
+        }
     }
 }
