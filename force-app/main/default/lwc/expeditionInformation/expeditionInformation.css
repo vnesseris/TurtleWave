@@ -1,0 +1,7 @@
+lightning-button{
+    --slds-c-button-text-color: black;
+}
+
+.slds-file-selector__button{
+    color: black;
+}
