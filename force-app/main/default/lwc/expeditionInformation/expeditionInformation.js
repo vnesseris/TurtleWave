@@ -9,23 +9,11 @@ import updateActionFindings from '@salesforce/apex/expeditionInformationControll
 import validateCompletion from '@salesforce/apex/expeditionInformationController.validateCompletion';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
-const columns = [
-    {label: 'Title', fieldName: 'Title__c', editable: false},
-    {label: 'Description', fieldName: 'Description__c', editable: false},
-    {label: 'Findings Input', fieldName: 'Findings_Input__c', editable:true, type: 'text'},
-    {label: 'Update', type: 'button', typeAttributes: {
-        variant: 'neutral',
-        label: 'Update',
-        name: 'update_action'
-    }}
-]
-
 export default class ExpeditionInformation extends LightningElement {
 
     uId = uId;
     @track expedition;
     @track expeditionStatus;
-    columns = columns;
     recordId;
     fileData;
     apiName;
