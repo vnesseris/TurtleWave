@@ -6,7 +6,7 @@
     },
     {
       "path": "manifest",
-      "default": true
+      "default": false
     }
   ],
   "name": "TurtleWave",

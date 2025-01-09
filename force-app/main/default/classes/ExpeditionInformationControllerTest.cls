@@ -22,19 +22,23 @@ private class ExpeditionInformationControllerTest {
         testContact.LastName = 'User';
         testContact.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('Marine_expedition_member').getRecordTypeId();
         testContact.User__c = testUser.Id;
+        testContact.Email = 'test@test.invalid';
         insert testContact;
 
         Expedition__c testExpedition = new Expedition__c(
             Name = 'Test Expedition',
             Status__c = 'Ongoing',
             Expedition_Start_Date__c = Date.today().addDays(-1),
-            Expedition_End_Date__c = Date.today().addDays(1)
+            Expedition_End_Date__c = Date.today().addDays(1),
+            Port_Name__c = 'Amsterdam',
+            Country__c = 'Netherlands'
         );
         insert testExpedition;
 
         Expedition_Member__c testExpeditionMember = new Expedition_Member__c(
             Contact__c = testContact.Id,
-            Expedition__c = testExpedition.Id
+            Expedition__c = testExpedition.Id,
+            Expedition_Role__c = 'Crew Member'
         );
         insert testExpeditionMember;
 

@@ -10,9 +10,9 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Amserdam</fullName>
+                <fullName>Amsterdam</fullName>
                 <default>false</default>
-                <label>Amserdam</label>
+                <label>Amsterdam</label>
             </value>
             <value>
                 <fullName>Bari</fullName>
