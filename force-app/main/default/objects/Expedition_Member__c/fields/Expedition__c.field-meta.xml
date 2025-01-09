@@ -2,6 +2,15 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Expedition__c</fullName>
     <label>Expedition</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Expedition__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Scheduled</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Expedition__c</referenceTo>
     <relationshipLabel>Expedition Members</relationshipLabel>
     <relationshipName>Expedition_Members</relationshipName>

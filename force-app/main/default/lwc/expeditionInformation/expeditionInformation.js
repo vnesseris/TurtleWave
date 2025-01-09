@@ -142,6 +142,7 @@ export default class ExpeditionInformation extends LightningElement {
                 .then((result) => {
                     this.toast('Expedition completed successfully', 'success');
                     this.expeditionCompleted = true;
+                    this.expedition = null;
                 })
                 .catch((error) => {
                     this.toast(error, 'error');

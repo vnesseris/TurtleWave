@@ -17,8 +17,10 @@ public with sharing class ExpeditionInformationController {
                 Expedition__r.Expedition_Start_Date__c, Expedition__r.Expedition_End_Date__c 
                 FROM Expedition_Member__c 
                 WHERE Contact__r.User__c = :uId
+                AND Expedition__r.Status__c = 'Ongoing'
                 AND Expedition__r.Expedition_End_Date__c >= TODAY 
-                AND Expedition__r.Expedition_Start_Date__c <= TODAY ];
+                AND Expedition__r.Expedition_Start_Date__c <= TODAY 
+                ];
             
             List<Expedition_Action__c> actions = [SELECT Id, Title__c, Action_Completed__c, Description__c, Findings_Input__c 
                 FROM Expedition_Action__c 
