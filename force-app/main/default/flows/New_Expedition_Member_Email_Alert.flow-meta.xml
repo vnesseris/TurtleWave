@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Send_Expedition_Assignment_Email</name>
         <label>Send Expedition Assignment Email</label>
-        <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -31,6 +31,28 @@
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>62.0</apiVersion>
+    <decisions>
+        <name>Check_if_Email_of_Contact_is_Populated</name>
+        <label>Check if Email of Contact is Populated</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Contact__r.Email</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Expedition_Assignment_Email</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>New Expedition Member Email Alert {!$Flow.CurrentDateTime}</interviewLabel>
     <label>New Expedition Member Email Alert</label>
@@ -56,11 +78,11 @@
     <recordLookups>
         <name>Get_Email_Template</name>
         <label>Get Email Template</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Send_Expedition_Assignment_Email</targetReference>
+            <targetReference>Check_if_Email_of_Contact_is_Populated</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -75,7 +97,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Email_Template</targetReference>
