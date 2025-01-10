@@ -12,7 +12,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class ExpeditionInformation extends LightningElement {
 
     uId = uId;
-    @track expedition;
+    @track expedition = {};
     @track expeditionStatus;
     recordId;
     fileData;
@@ -28,6 +28,7 @@ export default class ExpeditionInformation extends LightningElement {
             this.expeditionCompleted = data.expeditionStatus === 'Completed';
             this.expeditionActions = data.expeditionActions;
         } else if(error){
+            this.expedition = null;
             console.log(JSON.stringify(error));
         }
     }
