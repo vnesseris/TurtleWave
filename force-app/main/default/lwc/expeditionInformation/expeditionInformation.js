@@ -29,7 +29,7 @@ export default class ExpeditionInformation extends LightningElement {
             this.expeditionActions = data.expeditionActions;
         } else if(error){
             this.expedition = null;
-            console.log(JSON.stringify(error));
+            console.log(error);
         }
     }
 
