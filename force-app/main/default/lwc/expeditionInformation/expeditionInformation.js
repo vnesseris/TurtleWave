@@ -149,8 +149,7 @@ export default class ExpeditionInformation extends LightningElement {
             updateStatus({'actionId': actionId, 'obj': 'Expedition_Action__c', 'fieldToUpdate': 'Action_Completed__c', 'value':true})
             .then((result) =>{
                 this.toast('Expedition task completed', 'success');
-                this.expeditionActions = [...this.expeditionActions].filter((elm) => {elm.Id !== actionId});
-                btn.checked = false;
+                this.expeditionActions = this.expeditionActions.filter((elm) => elm.Id != actionId);
             })
             .catch((error) => {
                 btn.checked = false;
